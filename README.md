@@ -73,6 +73,7 @@ llvip_dataset/
 Multispectral-Pedestrian-Segmentation-Ensemble-CMP486/
 ├── Preprocessing/
 ├── YOLO_Detection/
+├── SAM2/
 ├── Ensemble_Pipeline/
 ├── Evaluation_Results/
 └── README.md
@@ -112,6 +113,17 @@ processed_dataset/
 4. ```Recall```: 0.8877
 Recommended confidence threshold: 0.30 (from F1 sweep)
 ---
+```SAM2/``` 
+- Logic for receiving (xyxy) coordinates from YOLOv11 and generating localized masks on high-resolution visible RGB imagery.Stability Scoring 
+- Outputs a predicted intersection-over-union (IoU) score for each mask, used to filter out low-confidence segments.Zero-Shot Transfer 
+- The capability to segment pedestrians without additional fine-tuning, leveraging SAM 2's foundational training.
+
+**Veto parameters:**
+1. ```min_area_ratio```: 0.05 --> masks smaller than 5% of the YOLO box area are rejected
+2. ```max_area_ratio```: 1.25 --> masks larger than 125% of the YOLO box area are rejected
+3. ```min_box_iou```: 0.30 --> masks whose bounding box overlaps the YOLO box by less than 30% IoU are rejected
+
+---
 ``` Ensemble_Pipeline/ ```
 - Contains the full cascaded ensemble notebook (Cascaded_MultiSpectral_Pedestrian_Segmentation_Best.ipynb).
 - Loads the YOLO checkpoint and SAM 2 Hiera-Large.
@@ -121,10 +133,6 @@ Recommended confidence threshold: 0.30 (from F1 sweep)
 - Evaluates YOLO-only vs ensemble side by side.
 - Results are cached to disk after the ensemble run to survive runtime disconnects.
   
-**Veto parameters:**
-1. ```min_area_ratio```: 0.05 --> masks smaller than 5% of the YOLO box area are rejected
-2. ```max_area_ratio```: 1.25 --> masks larger than 125% of the YOLO box area are rejected
-3. ```min_box_iou```: 0.30 --> masks whose bounding box overlaps the YOLO box by less than 30% IoU are rejected
 ---
 ``` Evaluation_Results/ ```
 
@@ -133,3 +141,35 @@ Recommended confidence threshold: 0.30 (from F1 sweep)
 2. ```ensemble_per_image_metrics.csv``` --> A detailed breakdown of True Positives, False Positives, and False Negatives for every image in the test set.
 3. ```ensemble_qualitative.png``` --> A visual comparison showing original IR/Visible frames alongside the final pedestrian detections and SAM 2 segmentations.
 4. ```ensemble_bridge_results.json``` --> Serialized output containing the final coordinates and mask data for all verified pedestrian detections.
+
+## Models
+
+| Model | Role | Checkpoint |
+|----------|:-------------:|------:|
+| YOLOv11s | Pedestrian detection on fused images | ```results/pedestrian_multispectral_yolo11s/weights/best.pt``` (our fine-tuned weights)| 
+| SAM 2 Hiera-Large | Instance segmentation on visible RGB | ```model_checkpoints/sam2_hiera_large.pt``` |
+| SAM 2 Hiera-Large | Instance segmentation on visible RGB | ```model_checkpoints/sam2_hiera_large.pt``` |
+
+SAM 2 weights are downloaded automatically on first run from:
+
+https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
+
+Ensure this is downloaded into the provided ```model_checkpoints\```
+
+## Environment 
+
+Python 3.12
+PyTorch 2.6.0+cu124
+Ultralytics 8.4.45
+CUDA 12.2 — NVIDIA Quadro RTX 4000 (8 GB VRAM)
+Conda environment: vision_proj_v3
+
+## Install dependencies:
+```
+bashconda create -n vision_proj_v3 python=3.12 -y
+conda activate vision_proj_v3
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+pip install ultralytics pyyaml opencv-python-headless matplotlib pandas scipy
+git clone https://github.com/facebookresearch/sam2.git /home/vteam5/sam2
+pip install -e /home/vteam5/sam2
+```
