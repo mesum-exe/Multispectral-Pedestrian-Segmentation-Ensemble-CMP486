@@ -86,14 +86,16 @@ Multispectral-Pedestrian-Segmentation-Ensemble-CMP486/
 - Writes data.yaml for YOLO training.
 
 **Output:**
+```
 processed_dataset/
 ├── train/
-│   ├── images/     ← fused .jpg images (1024×1024)
-│   └── labels/     ← YOLO format .txt annotations
+│   ├── images/     <-- fused .jpg images (1024×1024)
+│   └── labels/     <-- YOLO format .txt annotations
 ├── val/
 │   ├── images/
 │   └── labels/
 └── data.yaml
+```
 
 ```
 YOLO_Detection/
@@ -105,10 +107,10 @@ YOLO_Detection/
 - Exports: Qualitative prediction plots, yolo_detections.json — a bridge file of YOLO boxes in xyxy absolute pixel format for the SAM 2 stage.
 
 **Key results (through our training run):**
-mAP@50: 0.8805
-mAP@50-95: 0.4449
-Precision: 0.9268
-Recall: 0.8877
+```mAP@50```: 0.8805    --> mean Average Precision calculated over a 50% minimum IoU
+```mAP@50-95```: 0.4449 --> mean Average Precision calculated over a 50 to 95% minimum IoU
+```Precision```: 0.9268
+```Recall```: 0.8877
 Recommended confidence threshold: 0.30 (from F1 sweep)
 
 ``` Ensemble_Pipeline/ ```
@@ -121,9 +123,9 @@ Recommended confidence threshold: 0.30 (from F1 sweep)
 - Results are cached to disk after the ensemble run to survive runtime disconnects.
   
 **Veto parameters:**
-min_area_ratio: 0.05 — masks smaller than 5% of the YOLO box area are rejected
-max_area_ratio: 1.25 — masks larger than 125% of the YOLO box area are rejected
-min_box_iou: 0.30 — masks whose bounding box overlaps the YOLO box by less than 30% IoU are rejected
+```min_area_ratio```: 0.05 — masks smaller than 5% of the YOLO box area are rejected
+```max_area_ratio```: 1.25 — masks larger than 125% of the YOLO box area are rejected
+```min_box_iou```: 0.30 — masks whose bounding box overlaps the YOLO box by less than 30% IoU are rejected
 
 ``` Evaluation_Results/ ```
 **Contains saved output artefacts from both the YOLO and ensemble stages, including:**
@@ -132,7 +134,7 @@ min_box_iou: 0.30 — masks whose bounding box overlaps the YOLO box by less tha
 3. ```confidence_sweep.csv``` and ```confidence_sweep.png``` --> threshold sweep results across 8 confidence values
 4. ```yolo_baseline_metrics.json``` --> official mAP, precision, and recall scores
 5. ```qualitative_samples.png``` --> YOLO prediction vs ground truth visualisation
-6.```yolo_detections.json``` --> YOLO bridge export (xyxy boxes) for SAM 2
+6. ```yolo_detections.json``` --> YOLO bridge export (xyxy boxes) for SAM 2
 7. ```veto_settings.json``` --> veto parameters used for the ensemble run
 8. ```ensemble_results_cache_conf_*.json``` --> cached ensemble results per confidence threshold
 9. ```ensemble_metrics.json``` --> aggregated YOLO vs ensemble evaluation metrics
