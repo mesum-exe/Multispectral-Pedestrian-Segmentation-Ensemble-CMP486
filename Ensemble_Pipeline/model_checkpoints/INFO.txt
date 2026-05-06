@@ -1,1 +1,1 @@
-This folder is added so SAM2 download paths in the Notebooks work.
+This directory was added so that SAM 2 and its required files are downloaded properly, based on the paths defined in the Notebooks.
