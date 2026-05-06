@@ -2,11 +2,11 @@
 
 ## Short Description
 
-This project detects and segments pedestrians in challenging heat and low-visibility conditions using paired infrared and visible images from the LLVIP dataset. The system first uses YOLOv11 on fused infrared-visible images for pedestrian detection, then uses SAM 2 to refine detections into instance masks. A conservative validation step checks whether each SAM mask is reasonable before keeping it in the final ensemble output.
+A cascaded computer vision pipeline that detects and segments pedestrians in challenging visibility conditions using paired infrared and visible images from the LLVIP dataset. YOLOv11s detects pedestrians on fused IR+visible images, and SAM 2 refines each detection into a pixel-level instance mask. A veto mechanism discards masks that fail geometric validation, improving ensemble precision over the YOLO-only baseline.
 
 ## Project Overview
 
-Pedestrian detection can become unreliable in extreme climates. In very hot environments, thermal cameras may lose contrast because roads and buildings can become as hot as, or hotter than, people. Visible cameras can also struggle because of glare, haze, shadows, and low-light conditions.
+Pedestrian detection degrades in extreme environments. In very hot climates, thermal cameras lose contrast as roads and buildings approach human body temperature. Visible cameras fail under glare, haze, shadows, and low light. Multispectral fusion combines both sensor types into a single input, making detection robust where either sensor alone would fail.
 
 This project uses multispectral fusion to combine information from two sensor types:
 
