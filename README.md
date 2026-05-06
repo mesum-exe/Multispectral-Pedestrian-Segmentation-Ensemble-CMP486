@@ -53,7 +53,7 @@ Split used: LLVIP training split (12,025 pairs after alignment check), divided 8
 1. Visit: https://bupt-ai-cz.github.io/LLVIP/
 2. Follow the instructions from the provided link to access the dataset. You will need to enter your information.
 3. Download LLVIP.zip from the provided link.
-4. Place the zip at:
+4. Place the zip into these nested folders (vteam5 is a virtual machine used for this project):
 ```
    /home/vteam5/multispectral_pedestrian_ensemble/LLVIP.zip
 ```
@@ -68,6 +68,15 @@ llvip_dataset/
 │   └── train/       <-- visible .jpg images
 └── Annotations/     <-- flat folder of Pascal VOC XML files (no train/ subfolder)
 ```
+
+## Important Note on Paths:
+
+Multiple folders have been created to imitate the paths in the Notebooks. However, this project was completed on a virtual machine, so adjust paths as needed. 
+
+The Path Configuration can be separately changed in ```Preprocessing\ --> Project_Setup.ipnyb```.
+
+```results\``` and ```model_checkpoints``` directories have been duplicated from ```SAM2\``` and ```YOLO_Detection\``` into ```Ensemble_Artefacts\``` to keep SAM2 and YOLOv11s download paths active whether the isolated notebooks are ran, or the complete notebook is ran.
+
 ## Repository Structure
 ```
 Multispectral-Pedestrian-Segmentation-Ensemble-CMP486/
