@@ -1,0 +1,18 @@
+{
+  "cascade_confidence": 0.3,
+  "yolo_precision_at_50": 0.818407960199005,
+  "yolo_recall_at_50": 0.7156416847933558,
+  "yolo_f1_at_50": 0.7635826563983542,
+  "ensemble_precision_at_50": 0.824664626971052,
+  "ensemble_recall_at_50": 0.6929009294047854,
+  "ensemble_f1_at_50": 0.7530625402965829,
+  "ensemble_proxy_miou": 0.5737724321751443,
+  "veto_rate_percent": 3.9122568973315244,
+  "total_yolo_detections": 4422,
+  "total_vetoed": 173,
+  "veto_reasons": {
+    "mask_far_from_box": 132,
+    "mask_too_large": 24,
+    "mask_too_small": 17
+  }
+}

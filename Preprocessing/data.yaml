@@ -1,0 +1,6 @@
+path: /home/vteam5/multispectral_pedestrian_ensemble/processed_dataset
+train: train/images
+val: val/images
+nc: 1
+names:
+- Pedestrian
