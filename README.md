@@ -39,7 +39,48 @@ LLVIP infrared + visible image pair
         v
   Final pedestrian boxes, masks, metrics, and plots
 ```
+---
+## Important Note on Paths:
 
+Multiple folders have been created to imitate the paths in the Notebooks. However, this project was completed on a University-provided virtual machine, so paths will need to be adjusted. We will fix this in the future.
+
+The Path Configuration can be separately changed in ```Preprocessing\ --> Project_Setup.ipnyb```. These changes can easily be applied to the main notebook ```Ensemble_Pipeline\ --> Cascaded_RGB-T_Segmentation_Best.ipnyb``` as all sections are well formatted for clarity.
+
+```results\``` and ```model_checkpoints``` directories have been duplicated from ```SAM2\``` and ```YOLO_Detection\``` into ```Ensemble_Artefacts\``` to keep SAM2 and YOLOv11s download paths active whether the isolated notebooks are ran, or the complete notebook is ran.
+
+The root ```/home/vteam5/``` must also be replaced to the name of this repository in all paths. 
+
+Recommended Structure:
+```
+Multispectral-Pedestrian-Segmentation-Ensemble-CMP486/  <-- Root (replaces /home/vteam5/...)
+│
+├── Preprocessing/
+│   └── [Alignment scripts and sample overlays]
+├── YOLO/
+│   ├── results/
+│   │   └── pedestrian_multispectral_yolo11s/
+│   │       ├── weights/
+│   │       │   └── best.pt
+│   │       ├── args.yaml
+│   │       └── results.csv
+│   └── training_scripts/
+├── SAM2/
+│   ├── model_checkpoints/
+│   │   └── sam2_hiera_large.pt             
+│   ├── sam2/                               
+│   ├── sam2_configs/
+│   └── setup.py
+├── Ensemble_Pipeline/
+│   ├── Cascaded_MultiSpectral_Pedestrian_Segmentation_Best.ipynb
+│   └── ensemble_bridge_results.json
+└── Evaluation_Results/
+    ├── ensemble_metrics.json
+    ├── ensemble_per_image_metrics.csv
+    └── ensemble_qualitative.png
+```
+All instructions ahead will assume the same file structure as ours is being used.
+
+---
 ## Setup - LLVIP Dataset
 The LLVIP (Low-Light Visible-Infrared Paired) dataset provides pixel-aligned infrared and visible image pairs captured in low-light surveillance scenes.
 
@@ -53,10 +94,12 @@ Split used: LLVIP training split (12,025 pairs after alignment check), divided 8
 1. Visit: https://bupt-ai-cz.github.io/LLVIP/
 2. Follow the instructions from the provided link to access the dataset. You will need to enter your information.
 3. Download LLVIP.zip from the provided link.
-4. Place the zip into these nested folders (vteam5 is a virtual machine used for this project):
+4. Place the zip into these nested folders:
 ```
    /home/vteam5/multispectral_pedestrian_ensemble/LLVIP.zip
 ```
+or change all mentions of ```/home/vteam5/multispectral_pedestrian_ensemble/``` to ```Multispectral-Pedestrian-Segmentation-Ensemble-CMP486```.
+
 5. The Preprocessing notebook will extract and verify the archive automatically when it is ran.
 
 ### Expected folder structure after extraction:
@@ -68,15 +111,7 @@ llvip_dataset/
 │   └── train/       <-- visible .jpg images
 └── Annotations/     <-- flat folder of Pascal VOC XML files (no train/ subfolder)
 ```
-
-## Important Note on Paths:
-
-Multiple folders have been created to imitate the paths in the Notebooks. However, this project was completed on a virtual machine, so adjust paths as needed. 
-
-The Path Configuration can be separately changed in ```Preprocessing\ --> Project_Setup.ipnyb```.
-
-```results\``` and ```model_checkpoints``` directories have been duplicated from ```SAM2\``` and ```YOLO_Detection\``` into ```Ensemble_Artefacts\``` to keep SAM2 and YOLOv11s download paths active whether the isolated notebooks are ran, or the complete notebook is ran.
-
+---
 ## Repository Structure
 ```
 Multispectral-Pedestrian-Segmentation-Ensemble-CMP486/
@@ -141,6 +176,7 @@ Recommended confidence threshold: 0.30 (from F1 sweep)
 - Applies a geometric veto that discards masks that are empty, too small, too large, or **misaligned with the YOLO box** (main factor).
 - Evaluates YOLO-only vs ensemble side by side.
 - Results are cached to disk after the ensemble run to survive runtime disconnects.
+- ```ensemble_bridge_results.json``` --> Serialized output containing the final coordinates and mask data for all verified pedestrian detections.
   
 ---
 ``` Evaluation_Results/ ```
@@ -149,7 +185,6 @@ Recommended confidence threshold: 0.30 (from F1 sweep)
 1. ```ensemble_metrics.json``` --> Aggregated performance data, including final Precision, Recall, and mAP scores for the combined YOLOv11 and SAM 2 pipeline.
 2. ```ensemble_per_image_metrics.csv``` --> A detailed breakdown of True Positives, False Positives, and False Negatives for every image in the test set.
 3. ```ensemble_qualitative.png``` --> A visual comparison showing original IR/Visible frames alongside the final pedestrian detections and SAM 2 segmentations.
-4. ```ensemble_bridge_results.json``` --> Serialized output containing the final coordinates and mask data for all verified pedestrian detections.
 
 ## Models
 
