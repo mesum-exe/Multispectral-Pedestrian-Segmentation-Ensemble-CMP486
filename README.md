@@ -190,7 +190,7 @@ Recommended confidence threshold: 0.30 (from F1 sweep)
 
 | Model | Role | Checkpoint |
 |----------|:-------------:|------:|
-| YOLOv11s | Pedestrian detection on fused images | ```results/pedestrian_multispectral_yolo11s/weights/best.pt``` (our fine-tuned weights)| 
+| Fine-tuned YOLOv11s | Pedestrian detection on fused images | ```results/pedestrian_multispectral_yolo11s/weights/best.pt``` (in files) --> ```results/weights/best.pt ``` (adjusted for repository)| 
 | SAM 2 Hiera-Large | Instance segmentation on visible RGB | ```model_checkpoints/sam2_hiera_large.pt``` |
 | SAM 2 Hiera-Large | Instance segmentation on visible RGB | ```model_checkpoints/sam2_hiera_large.pt``` |
 
