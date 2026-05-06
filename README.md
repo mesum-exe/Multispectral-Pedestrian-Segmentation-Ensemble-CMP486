@@ -77,6 +77,7 @@ Multispectral-Pedestrian-Segmentation-Ensemble-CMP486/
 ├── Evaluation_Results/
 └── README.md
 ```
+---
 ```Preprocessing/```
 - Contains the data preparation pipeline.
 - Reads paired IR and visible images from LLVIP
@@ -96,23 +97,21 @@ processed_dataset/
 │   └── labels/
 └── data.yaml
 ```
-
-```
-YOLO_Detection/
-```
+---
+```YOLO_Detection/```
 - Contains the YOLOv11s training and evaluation notebook.
 - Loads the trained checkpoint (or trains from scratch if none exists).
 - Runs a confidence threshold sweep across [0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.50] to identify the optimal threshold for YOLO
 - Runs official model.val() for mAP metrics.
-- Exports: Qualitative prediction plots, yolo_detections.json — a bridge file of YOLO boxes in xyxy absolute pixel format for the SAM 2 stage.
+- Exports: Qualitative prediction plots, yolo_detections.json --> a bridge file of YOLO boxes in xyxy absolute pixel format for the SAM 2 stage.
 
 **Key results (through our training run):**
-```mAP@50```: 0.8805    --> mean Average Precision calculated over a 50% minimum IoU
-```mAP@50-95```: 0.4449 --> mean Average Precision calculated over a 50 to 95% minimum IoU
-```Precision```: 0.9268
-```Recall```: 0.8877
+1. ```mAP@50```: 0.8805    --> mean Average Precision calculated over a 50% minimum IoU
+2. ```mAP@50-95```: 0.4449 --> mean Average Precision calculated over a 50 to 95% minimum IoU
+3. ```Precision```: 0.9268
+4. ```Recall```: 0.8877
 Recommended confidence threshold: 0.30 (from F1 sweep)
-
+---
 ``` Ensemble_Pipeline/ ```
 - Contains the full cascaded ensemble notebook (Cascaded_MultiSpectral_Pedestrian_Segmentation_Best.ipynb).
 - Loads the YOLO checkpoint and SAM 2 Hiera-Large.
@@ -123,11 +122,12 @@ Recommended confidence threshold: 0.30 (from F1 sweep)
 - Results are cached to disk after the ensemble run to survive runtime disconnects.
   
 **Veto parameters:**
-```min_area_ratio```: 0.05 — masks smaller than 5% of the YOLO box area are rejected
-```max_area_ratio```: 1.25 — masks larger than 125% of the YOLO box area are rejected
-```min_box_iou```: 0.30 — masks whose bounding box overlaps the YOLO box by less than 30% IoU are rejected
-
+1. ```min_area_ratio```: 0.05 --> masks smaller than 5% of the YOLO box area are rejected
+2. ```max_area_ratio```: 1.25 --> masks larger than 125% of the YOLO box area are rejected
+3. ```min_box_iou```: 0.30 --> masks whose bounding box overlaps the YOLO box by less than 30% IoU are rejected
+---
 ``` Evaluation_Results/ ```
+
 **Contains saved output artefacts from both the YOLO and ensemble stages, including:**
 1. ```section4_alignment_check.png``` --> IR / visible / fused overlay for 3 sample pairs
 2. ```training_curves.png``` --> box loss, classification loss, mAP over training epochs
