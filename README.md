@@ -128,16 +128,8 @@ Recommended confidence threshold: 0.30 (from F1 sweep)
 ---
 ``` Evaluation_Results/ ```
 
-**Contains saved output artefacts from both the YOLO and ensemble stages, including:**
-1. ```section4_alignment_check.png``` --> IR / visible / fused overlay for 3 sample pairs
-2. ```training_curves.png``` --> box loss, classification loss, mAP over training epochs
-3. ```confidence_sweep.csv``` and ```confidence_sweep.png``` --> threshold sweep results across 8 confidence values
-4. ```yolo_baseline_metrics.json``` --> official mAP, precision, and recall scores
-5. ```qualitative_samples.png``` --> YOLO prediction vs ground truth visualisation
-6. ```yolo_detections.json``` --> YOLO bridge export (xyxy boxes) for SAM 2
-7. ```veto_settings.json``` --> veto parameters used for the ensemble run
-8. ```ensemble_results_cache_conf_*.json``` --> cached ensemble results per confidence threshold
-9. ```ensemble_metrics.json``` --> aggregated YOLO vs ensemble evaluation metrics
-10. ```ensemble_per_image_metrics.csv``` --> per-image breakdown of TP, FP, FN for both stages
-11. ```ensemble_qualitative.png``` --> 4-column visualisation: IR / visible / YOLO boxes / SAM 2 masks
-12. ```ensemble_bridge_results.json``` --> final masks and boxes for downstream use
+**Contains saved output artefacts from the ensemble stage, including:**
+1. ```ensemble_metrics.json``` --> Aggregated performance data, including final Precision, Recall, and mAP scores for the combined YOLOv11 and SAM 2 pipeline.
+2. ```ensemble_per_image_metrics.csv``` --> A detailed breakdown of True Positives, False Positives, and False Negatives for every image in the test set.
+3. ```ensemble_qualitative.png``` --> A visual comparison showing original IR/Visible frames alongside the final pedestrian detections and SAM 2 segmentations.
+4. ```ensemble_bridge_results.json``` --> Serialized output containing the final coordinates and mask data for all verified pedestrian detections.
